@@ -41,11 +41,9 @@ fn solve2(moves: Vec<Move>, staks: &mut [Vec<char>; 10]) {
 
 fn solve1(moves: Vec<Move>, staks: &mut [Vec<char>; 10]) {
     for Move { count, from, to } in moves {
-        for _ in 0..count {
-            if let Some(val) = staks[from].pop() {
-                staks[to].push(val);
-            }
-        }
+        let start = staks[from].len();
+        let pops = staks[from].drain(start - count..).collect::<Vec<_>>();
+        staks[to].extend(pops);
     }
 }
 
