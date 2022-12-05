@@ -27,23 +27,20 @@ fn main() {
 }
 
 fn solve2(moves: Vec<Move>, staks: &mut [Vec<char>; 10]) {
-    let mut temp = vec![];
     for Move { count, from, to } in moves {
-        for _ in 0..count {
-            if let Some(val) = staks[from].pop() {
-                temp.push(val);
-            }
-        }
-        temp.reverse();
-        staks[to].append(&mut temp);
+        let start = staks[from].len();
+        let pops = staks[from].drain(start - count..).collect::<Vec<_>>();
+        staks[to].extend(pops);
     }
 }
 
 fn solve1(moves: Vec<Move>, staks: &mut [Vec<char>; 10]) {
     for Move { count, from, to } in moves {
-        let start = staks[from].len();
-        let pops = staks[from].drain(start - count..).collect::<Vec<_>>();
-        staks[to].extend(pops);
+        for _ in 0..count {
+            if let Some(val) = staks[from].pop() {
+                staks[to].push(val);
+            }
+        }
     }
 }
 
